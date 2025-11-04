@@ -37,9 +37,7 @@ func New() (*Config, *errors.ConfigError) {
 	if err != nil {
 		return nil, errors.New("Config file not valid", errors.ConfigPath, err)
 	}
-
 	_, error := os.Stat(path)
-
 	if !os.IsNotExist(error) {
 		fmt.Printf("Config file does not exist, creating a new one")
 	}
@@ -64,8 +62,8 @@ func Get() (*Config, *errors.ConfigError) {
 		return nil, errors.New("Config file does not exists", errors.ConfigFileExists, error)
 	}
 
-	config, err := readConfigFromFile(path)
-	if err != nil {
+	config, configErr := readConfigFromFile(path)
+	if configErr != nil {
 		return nil, errors.New("Reading from the config file failed", errors.ErrorReadingConfigFile, err)
 	}
 	return config, nil
@@ -107,5 +105,9 @@ func Delete() error {
 }
 
 func (cfg *Config) ToString() string {
-	return fmt.Sprintf("Default task:\t%s\n", cfg.DefaultTask)
+	out, err := json.MarshalIndent(cfg, "", "  ")
+	if err != nil {
+		panic(err)
+	}
+	return string(out)
 }

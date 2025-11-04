@@ -16,13 +16,12 @@ var configSetCmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
-
 		if generateNewConfig {
 			if err = handlers.GenerateConfig(); err != nil {
-				return nil
+				return err
 			}
+			return nil
 		}
-
 		defaultTask, err := cmd.Flags().GetString("defaultTask")
 		if err != nil {
 			return err
@@ -30,17 +29,15 @@ var configSetCmd = &cobra.Command{
 		if defaultTask == "" {
 			return fmt.Errorf("Wrong input, default task cannot be empty")
 		}
-
-		cfg, err := config.Get()
-		if err != nil {
-			return err
+		cfg, configErr := config.Get()
+		if configErr != nil {
+			return configErr
 		}
 		cfg.DefaultTask = defaultTask
 		_, err = cfg.Save()
 		if err != nil {
 			return err
 		}
-
 		return nil
 	},
 }

@@ -29,6 +29,6 @@ func New(message string, errorCode ConfigErrorCode, err error) *ConfigError {
 	}
 }
 
-func (cfg *ConfigError) Error() string {
+func (cfg ConfigError) Error() string {
 	return fmt.Sprintf("CONFIG ERROR: %s\nOriginalError:%v\n", cfg.s, cfg.originatingError)
 }
