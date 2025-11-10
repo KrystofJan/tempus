@@ -26,13 +26,20 @@ func NewTaskProvider() (*TaskProvider, error) {
 	}, nil
 }
 
+func (self *TaskProvider) CalculateTaskTime(taskId int64) (int64, error) {
+	recordedTime, err := self.repo.CalculateTaskTime(self.ctx, taskId)
+	if err != nil {
+		return 0, fmt.Errorf("Cannot query the database: %v", err)
+	}
+	return int64(recordedTime.Float64), nil
+}
+
 func (self *TaskProvider) FindAllTasks() ([]repository.Task, error) {
 	entries, err := self.repo.FindAllTasks(self.ctx)
 	if err != nil {
 		return nil, fmt.Errorf("Cannot query the database: %v", err)
 	}
 	return entries, nil
-
 }
 
 func (self *TaskProvider) FindTaskById(id int64) (repository.Task, error) {

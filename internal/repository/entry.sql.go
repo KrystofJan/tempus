@@ -32,8 +32,21 @@ func (q *Queries) AddEntry(ctx context.Context, taskID int64) (Entry, error) {
 	return i, err
 }
 
+const calculateEntryTime = `-- name: CalculateEntryTime :one
+SELECT SUM(COALESCE(end_timestamp, (strftime('%s', 'now'))) - start_timestamp)
+FROM entry 
+WHERE id = ?
+`
+
+func (q *Queries) CalculateEntryTime(ctx context.Context, id int64) (sql.NullFloat64, error) {
+	row := q.db.QueryRowContext(ctx, calculateEntryTime, id)
+	var sum sql.NullFloat64
+	err := row.Scan(&sum)
+	return sum, err
+}
+
 const calculateTaskTime = `-- name: CalculateTaskTime :one
-SELECT SUM(end_timestamp - start_timestamp) 
+SELECT SUM(COALESCE(end_timestamp, (strftime('%s', 'now'))) - start_timestamp)
 FROM entry 
 WHERE task_id = ?
 `

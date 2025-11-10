@@ -28,6 +28,11 @@ INSERT INTO entry (
 DELETE FROM entry;
 
 -- name: CalculateTaskTime :one
-SELECT SUM(end_timestamp - start_timestamp) 
+SELECT SUM(COALESCE(end_timestamp, (strftime('%s', 'now'))) - start_timestamp)
 FROM entry 
 WHERE task_id = ?;
+
+-- name: CalculateEntryTime :one
+SELECT SUM(COALESCE(end_timestamp, (strftime('%s', 'now'))) - start_timestamp)
+FROM entry 
+WHERE id = ?;

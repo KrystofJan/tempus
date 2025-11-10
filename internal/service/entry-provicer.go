@@ -56,3 +56,11 @@ func (self *EntryProvider) AddEntry(id int64) (repository.Entry, error) {
 	}
 	return entries, nil
 }
+
+func (self *EntryProvider) CalculateEntryTime(id int64) (int64, error) {
+	recordedTime, err := self.repo.CalculateEntryTime(self.ctx, id)
+	if err != nil {
+		return 0, fmt.Errorf("Cannot query the database: %v", err)
+	}
+	return int64(recordedTime.Float64), nil
+}
