@@ -26,9 +26,11 @@ func EnsureDefaultTaskExists() (*repository.Task, error) {
 
 	task, err := taskProvider.FindTaskByName(cfg.DefaultTask)
 	if err != nil {
-		if _, err := taskProvider.AddTask(cfg.DefaultTask); err != nil {
+		task, err := taskProvider.AddTask(cfg.DefaultTask)
+		if err != nil {
 			return nil, err
 		}
+		return &task, nil
 	}
 
 	return &task, nil
