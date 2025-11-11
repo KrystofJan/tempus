@@ -36,3 +36,8 @@ WHERE task_id = ?;
 SELECT SUM(COALESCE(end_timestamp, (strftime('%s', 'now'))) - start_timestamp)
 FROM entry 
 WHERE id = ?;
+
+-- name: MoveEntry :exec
+UPDATE entry
+SET task_id = ?
+WHERE id = ?;

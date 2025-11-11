@@ -143,3 +143,19 @@ func (q *Queries) FinishEntry(ctx context.Context, id int64) error {
 	_, err := q.db.ExecContext(ctx, finishEntry, id)
 	return err
 }
+
+const moveEntry = `-- name: MoveEntry :exec
+UPDATE entry
+SET task_id = ?
+WHERE id = ?
+`
+
+type MoveEntryParams struct {
+	TaskID int64
+	ID     int64
+}
+
+func (q *Queries) MoveEntry(ctx context.Context, arg MoveEntryParams) error {
+	_, err := q.db.ExecContext(ctx, moveEntry, arg.TaskID, arg.ID)
+	return err
+}
