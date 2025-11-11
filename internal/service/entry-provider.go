@@ -64,3 +64,8 @@ func (self *EntryProvider) CalculateEntryTime(id int64) (int64, error) {
 	}
 	return int64(recordedTime.Float64), nil
 }
+
+func (self *EntryProvider) MoveTask(entryId, taskId int64) error {
+	params := repository.MoveEntryParams{TaskID: taskId, ID: entryId}
+	return self.repo.MoveEntry(self.ctx, params)
+}
