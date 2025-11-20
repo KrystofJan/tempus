@@ -13,11 +13,7 @@ type TaskProvider struct {
 	repo *repository.Queries
 }
 
-func NewTaskProvider() (*TaskProvider, error) {
-	db, err := db.NewDatabase()
-	if err != nil {
-		return nil, err
-	}
+func NewTaskProvider(db *db.Database) (*TaskProvider, error) {
 	ctx := context.Background()
 	repo := repository.New(db.Instance)
 	return &TaskProvider{

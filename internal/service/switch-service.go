@@ -14,11 +14,7 @@ type SwitchService struct {
 	db   *db.Database
 }
 
-func NewSwitchService() (*SwitchService, error) {
-	db, err := db.NewDatabase()
-	if err != nil {
-		return nil, err
-	}
+func NewSwitchService(db *db.Database) (*SwitchService, error) {
 	ctx := context.Background()
 	repo := repository.New(db.Instance)
 	return &SwitchService{

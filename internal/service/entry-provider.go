@@ -13,11 +13,7 @@ type EntryProvider struct {
 	repo *repository.Queries
 }
 
-func NewEntryProvider() (*EntryProvider, error) {
-	db, err := db.NewDatabase()
-	if err != nil {
-		return nil, err
-	}
+func NewEntryProvider(db *db.Database) (*EntryProvider, error) {
 	ctx := context.Background()
 	repo := repository.New(db.Instance)
 	return &EntryProvider{
