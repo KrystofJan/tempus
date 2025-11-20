@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"github.com/KrystofJan/tempus/internal/config"
+	"github.com/KrystofJan/tempus/internal/db"
 	"github.com/KrystofJan/tempus/internal/errors"
 	"github.com/KrystofJan/tempus/internal/repository"
 	"github.com/KrystofJan/tempus/internal/service"
@@ -19,7 +20,11 @@ func EnsureDefaultTaskExists() (*repository.Task, error) {
 		}
 	}
 
-	taskProvider, err := service.NewTaskProvider()
+	db, err := db.NewDatabase()
+	if err != nil {
+		return nil, err
+	}
+	taskProvider, err := service.NewTaskProvider(db)
 	if err != nil {
 		return nil, err
 	}

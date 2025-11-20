@@ -5,7 +5,7 @@ import (
 	"github.com/KrystofJan/tempus/internal/service"
 )
 
-func MoveEntry(entryId, taskId int64) error {
+func DeleteEntry(id int64) error {
 	db, err := db.NewDatabase()
 	if err != nil {
 		return err
@@ -14,6 +14,5 @@ func MoveEntry(entryId, taskId int64) error {
 	if err != nil {
 		return nil
 	}
-
-	return entryProvider.MoveEntry(entryId, taskId)
+	return entryProvider.DeleteEntry(id)
 }

@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"github.com/KrystofJan/tempus/internal/db"
 	"github.com/KrystofJan/tempus/internal/handlers"
 	"github.com/KrystofJan/tempus/internal/service"
 	"github.com/spf13/cobra"
@@ -11,11 +12,15 @@ var start = &cobra.Command{
 	Short: "starts your day",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		// TODO: Move all of this into a transaction
-		entryProvider, err := service.NewEntryProvider()
+		db, err := db.NewDatabase()
 		if err != nil {
 			return err
 		}
-		taskProvider, err := service.NewTaskProvider()
+		entryProvider, err := service.NewEntryProvider(db)
+		if err != nil {
+			return err
+		}
+		taskProvider, err := service.NewTaskProvider(db)
 		if err != nil {
 			return err
 		}

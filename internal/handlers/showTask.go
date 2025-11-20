@@ -4,13 +4,18 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/KrystofJan/tempus/internal/db"
 	"github.com/KrystofJan/tempus/internal/display"
 	"github.com/KrystofJan/tempus/internal/repository"
 	"github.com/KrystofJan/tempus/internal/service"
 )
 
 func ShowTaskById(id int64) error {
-	taskProvider, err := service.NewTaskProvider()
+	db, err := db.NewDatabase()
+	if err != nil {
+		return err
+	}
+	taskProvider, err := service.NewTaskProvider(db)
 	if err != nil {
 		return err
 	}
@@ -24,7 +29,11 @@ func ShowTaskById(id int64) error {
 }
 
 func ShowTaskByName(name string) error {
-	taskProvider, err := service.NewTaskProvider()
+	db, err := db.NewDatabase()
+	if err != nil {
+		return err
+	}
+	taskProvider, err := service.NewTaskProvider(db)
 	if err != nil {
 		return err
 	}
@@ -47,10 +56,11 @@ func ShowTaskByName(name string) error {
 }
 
 func ShowAllTasks() error {
-	taskProvider, err := service.NewTaskProvider()
+	db, err := db.NewDatabase()
 	if err != nil {
 		return err
 	}
+	taskProvider, err := service.NewTaskProvider(db)
 	tasks, err := taskProvider.FindAllTasks()
 	if err != nil {
 		return fmt.Errorf("SERVICE ERROR: %v", err)

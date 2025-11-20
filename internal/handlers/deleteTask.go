@@ -5,15 +5,15 @@ import (
 	"github.com/KrystofJan/tempus/internal/service"
 )
 
-func MoveEntry(entryId, taskId int64) error {
+func DeleteTask(id int64) error {
 	db, err := db.NewDatabase()
 	if err != nil {
 		return err
 	}
-	entryProvider, err := service.NewEntryProvider(db)
+	taskProvider, err := service.NewTaskProvider(db)
 	if err != nil {
 		return nil
 	}
-
-	return entryProvider.MoveEntry(entryId, taskId)
+	taskProvider.DeleteTask(id)
+	return nil
 }

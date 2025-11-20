@@ -77,3 +77,7 @@ func (self *TaskProvider) ClearTasks() error {
 	}
 	return nil
 }
+
+func (self *TaskProvider) DeleteTask(id int64) error {
+	return self.repo.DeleteTask(self.ctx, id)
+}
